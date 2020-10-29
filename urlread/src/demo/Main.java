@@ -6,6 +6,10 @@ public class Main {
 
     public static void main(String[] args) {
 
+        urlGui urlGui = new urlGui();
+        urlGui.createGui();
+
+        /*
         String url = "https://www.dr.dk";
         //url = "https://www.eb.dk";
         URLReader uread = new URLReader();
@@ -24,7 +28,6 @@ public class Main {
 
         lst.addAll(lst2);
 
-
         System.out.println("Læst lst = " + lst.size());
 
         JDBCWriter jw = new JDBCWriter();
@@ -33,11 +36,7 @@ public class Main {
 
         int ires = jw.writeLines(url,lst);
         System.out.println("Gemt antal linjer = " + ires);
+*/
 
-        /*
-        for (String line:
-             lst) {
-            System.out.println(line);
-        } */
     }
 }
