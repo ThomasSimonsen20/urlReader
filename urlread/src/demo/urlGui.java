@@ -43,10 +43,18 @@ public class urlGui {
         System.out.println("Linjer gemt = " + rowcnt);
     }
 
-    public void searchDB() {
+    public void deleteDB() {
         String url = txtUrl.getText();
         String srch = txtResult.getText();
         int cnt = jdbcWriter.searchDB(url, srch);
+        lblCount.setText(""+cnt);
+    }
+
+    public void searchDB() {
+        lblCount.setText("");
+        String url = txtUrl.getText();
+        String srch = txtResult.getText();
+        int cnt = jdbcWriter.deleteRows(url, srch);
         lblCount.setText(""+cnt);
     }
 
@@ -79,6 +87,7 @@ public class urlGui {
         pbConnect.addActionListener(a -> connect());
         pbSaveToDB.addActionListener(a -> saveToDB());
         pbSearchDB.addActionListener(a -> searchDB());
+        pbDelete.addActionListener(a -> deleteDB());
 
         //MAIN WINDOW
         frame.pack();
