@@ -1,7 +1,9 @@
 package demo;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class urlGui {
 
@@ -12,11 +14,25 @@ public class urlGui {
     JButton pbSaveToDB;
     JLabel lblCount;
     JButton pbDelete;
+    JList lbLines;
 
 
     public urlGui() {
         jdbcWriter = new JDBCWriter();
     }
+
+    public void retriveLinesDB() {
+        Vector<String> v1 = new Vector<>();
+        v1.add("Linje1");
+        v1.add("Set for");
+        v1.add("teeeest");
+
+        String url = txtUrl.getText();
+        String srch = txtResult.getText();
+        v1 = jdbcWriter.getLines(url, srch);
+        lbLines.setListData(v1);
+    }
+
 
     public void retrieveUrl() {
         String url = txtUrl.getText();
@@ -44,17 +60,17 @@ public class urlGui {
     }
 
     public void deleteDB() {
-        String url = txtUrl.getText();
-        String srch = txtResult.getText();
-        int cnt = jdbcWriter.searchDB(url, srch);
-        lblCount.setText(""+cnt);
-    }
-
-    public void searchDB() {
         lblCount.setText("");
         String url = txtUrl.getText();
         String srch = txtResult.getText();
         int cnt = jdbcWriter.deleteRows(url, srch);
+        lblCount.setText(""+cnt);
+    }
+
+    public void searchDB() {
+        String url = txtUrl.getText();
+        String srch = txtResult.getText();
+        int cnt = jdbcWriter.searchDB(url, srch);
         lblCount.setText(""+cnt);
     }
 
@@ -67,7 +83,10 @@ public class urlGui {
         JButton pbSearchDB = new JButton("Søg");
         pbDelete = new JButton("Delete");
 
+        frame.getContentPane().add(panelTop, BorderLayout.NORTH);
+        panelTop.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         frame.add(panelTop);
+
         panelTop.add(pbConnect);
         panelTop.add(pbRetrieveUrl);
         panelTop.add(pbSaveToDB);
@@ -88,6 +107,21 @@ public class urlGui {
         pbSaveToDB.addActionListener(a -> saveToDB());
         pbSearchDB.addActionListener(a -> searchDB());
         pbDelete.addActionListener(a -> deleteDB());
+
+        JPanel panelBottom = new JPanel();
+        JButton pbTest = new JButton("Dette er bunden");
+        panelBottom.add(pbTest);
+
+        Vector<String> v1 = new Vector<>();
+        v1.add("1");
+        v1.add("2");
+        v1.add("3");
+        lbLines = new JList(v1);
+        panelBottom.add(lbLines);
+        pbTest.addActionListener(a -> retriveLinesDB());
+
+
+        frame.getContentPane().add(panelBottom, BorderLayout.SOUTH);
 
         //MAIN WINDOW
         frame.pack();

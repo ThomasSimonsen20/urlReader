@@ -2,6 +2,7 @@ package demo;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class JDBCWriter {
 
@@ -37,8 +38,32 @@ public class JDBCWriter {
         return res;
     }
 
+    public Vector<String> getLines(String aUrl, String aWord) {
+        String searchStr = "SELECT left(line,50) as line FROM urlreads where url like ? and line like ? LIMIT 20";
+        PreparedStatement preparedStatement;
+        Vector<String> v1 = new Vector<>();
+
+        try {
+            preparedStatement = connection.prepareStatement(searchStr);
+            preparedStatement.setString(1, "%" + aUrl + "%");
+            preparedStatement.setString(2, "%" + aWord + "%");
+            System.out.println(searchStr);
+            ResultSet resset = preparedStatement.executeQuery();
+            String str1;
+            while(resset.next()) {
+                str1 = "" + resset.getObject("Line");
+                v1.add(str1);
+            }
+        } catch (SQLException sqlerr) {
+            System.out.println("Error in select = " + sqlerr.getMessage());
+        }
+        return v1;
+    }
+
     public int searchDB(String aUrl, String aWord) {
         String searchStr = "SELECT count(*) FROM urlreads where url like " + '"' + "%" + aUrl + "%" + '"' + " and line like " + '"' + "%" + aWord + "%" + '"';
+        //String searchStr = "SELECT count(*) FROM urlreads where url like ? and line like ?";
+
         PreparedStatement preparedStatement;
         int res = -1;
         try {
@@ -55,6 +80,7 @@ public class JDBCWriter {
         }
         return res;
     }
+
 
     public int writeLines(String aUrl, ArrayList<String> aLst) {
 
